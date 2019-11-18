@@ -1,0 +1,24 @@
+{
+  "name": "feods",
+  "version": "0.0.1",
+  "description": "Floom online delivery service - coding challenge",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remikamal/feods.git"
+  },
+  "keywords": [
+    "order",
+    "delivery",
+    "floom"
+  ],
+  "author": "Remi Kamal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/remikamal/feods/issues"
+  },
+  "homepage": "https://github.com/remikamal/feods#readme"
+}
