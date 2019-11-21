@@ -29,15 +29,19 @@ class FeodsApp {
     }
 
     public async instantiateMiddleware() {
-        let _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.server.use(helmet());
-            _this.server.use(bodyParser);
+        let promiseFunction = (function (resolve, reject) {
+            //this.server.use(helmet());
+            this.server.use(bodyParser.json({ type: 'application/*+json' }));
             let feodsRouter = createAndReturnFeodsRouter();
-            _this.server.use("/", feodsRouter);
+            this.server.use("/", feodsRouter);
+            this.server.get("/testServerRoutes", function (req, res) {
+                res.send("Server is running correctly.")
+            });
             return resolve(0);
-        })
-    }
+        }).bind(this);
+        this.createPromise(promiseFunction);
+
+    };
 
     public async startExpress() {
         //TODO: set port in dotenv.
@@ -45,7 +49,13 @@ class FeodsApp {
         console.log("Feods Server Started! Listening on port: 1234");
     }
 
+    public async createPromise(promiseFunction) {
+        return new Promise(promiseFunction);
+    }
+
 }
+
+
 
 let feodsApp: FeodsApp;
 function createSingletonApplication() {
