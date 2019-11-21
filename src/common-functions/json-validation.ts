@@ -1,0 +1,9 @@
+function validateConsignmentCreate()
+{
+
+}
+
+function validateStatusUpdate()
+{
+    
+}

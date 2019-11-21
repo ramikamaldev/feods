@@ -1,8 +1,9 @@
 let grunt = require("grunt");
-let config = grunt.file.read("./config/dev-env/config.env")
+let config = grunt.file.read("./config/dev-env/config.env");
+grunt.file.delete("./tscommand*")
 grunt.file.write("./config/config.env", config)
 grunt.initConfig({
-
+    clean: ['./bin', "./tscommand*.**"],
     ts: {
         default: {
             src: ["./src/**/*.ts"],
@@ -27,12 +28,14 @@ grunt.initConfig({
                 verbose: true,
                 sourceMap: false,
                 declaration: false,
+                esModuleInterop: true
 
             }
         }
     }
 });
-
+grunt.loadNpmTasks('grunt-contrib-clean');
 grunt.loadNpmTasks("grunt-ts");
+
 //grunt.registerTask("default", ["ts:copy"]);
-grunt.registerTask('default', ['ts']);
+grunt.registerTask('default', ["clean", 'ts']);
