@@ -8,7 +8,7 @@ grunt.initConfig({
         default: {
             src: ["./src/**/*.ts"],
             outDir: "bin",
-            watch: "src",
+            watch: false,
             options: {
                 compile: true,
                 target: 'es2016',
@@ -23,7 +23,6 @@ grunt.initConfig({
                 strict: false,
                 strictNullChecks: true,
                 strictPropertyInitilization: true,
-                strictNullChecks: true,
                 verbose: true,
                 sourceMap: false,
                 declaration: false,
