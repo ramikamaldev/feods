@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const consignmentSchema: Schema = new Schema(
     {
@@ -11,7 +11,10 @@ const consignmentSchema: Schema = new Schema(
         "consignmentEntryCreated": { type: Date, default: Date.now },
         "state": {
             type: String,
-            enum: ['processing_order', 'order_accepted', 'order_rejected', 'being_prepared', 'shipped', 'out_for_delivery', 'delivered', 'order_cancelled'],
+            enum: ['processing_order', 'order_accepted', 'order_rejected', 'being_prepared', 'shipped', 'out_for_delivery', 'delivered', 'order_cancelled',
+                "en_route_to_sender", "waiting_at_sender", "en_route_to_recipient", "delivered", "unsuccesful"],
             default: 'order_accepted'
         },
     });
+
+export const consignmentModel = model('feods-consignment', consignmentSchema);

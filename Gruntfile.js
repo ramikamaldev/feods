@@ -1,5 +1,5 @@
 let grunt = require("grunt");
-let config = grunt.file.read("./config/dev-env/config.env");
+let config = grunt.file.read("./config/dev-env/dev.env");
 grunt.file.delete("./tscommand*")
 grunt.file.write("./config/config.env", config)
 grunt.initConfig({
@@ -15,13 +15,12 @@ grunt.initConfig({
                 module: 'commonjs',
                 fast: "watch",
                 rootDir: "./src",
-                noImplicitAny: false,
                 comments: true,
                 failOnTypeErrors: true,
-                noImplicitAny: true,
-                noImplicitReturns: true,
+                noImplicitAny: false,
+                noImplicitReturns: false,
                 pretty: true,
-                strict: true,
+                strict: false,
                 strictNullChecks: true,
                 strictPropertyInitilization: true,
                 strictNullChecks: true,
