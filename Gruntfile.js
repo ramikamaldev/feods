@@ -1,5 +1,5 @@
 let grunt = require("grunt");
-let config = grunt.file.read("./config/dev-env/config.env");
+let config = grunt.file.read("./config/dev-env/dev.env");
 grunt.file.delete("./tscommand*")
 grunt.file.write("./config/config.env", config)
 grunt.initConfig({
