@@ -12,7 +12,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.21.2",
-    "mongoose": "^5.7.11"
+    "mongoose": "^5.7.11",
+    "paypal-rest-sdk": "^1.8.1"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
@@ -21,6 +22,7 @@
     "@types/helmet": "0.0.45",
     "@types/mongoose": "^5.5.32",
     "@types/node": "^12.12.11",
+    "@types/paypal-rest-sdk": "^1.7.5",
     "@types/typescript": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
