@@ -8,11 +8,17 @@ export function createAndReturnFeodsRouter() {
     //Protect these endpoints. 
     router.use("/update-order-delivery-status", updateDeliveryStatusFunction);
     router.use("create-new-order", createNewOrderFunction);
+    router.use("redirect-url", redirectURL);
     return router;
 }
 
 function rootFunction(req: express.Request, res: express.Response) {
     res.status(200).send("hi, happy :)");
+}
+
+function redirectURL(req: express.Request, res: express.Response) {
+    console.log(JSON.stringify(req));
+    res.status(200).send("thanks!");
 }
 
 function returnDeliveryStatusFunction(req: express.Request, res: express.Response) {
