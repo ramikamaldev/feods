@@ -7,8 +7,8 @@ export function createAndReturnFeodsRouter() {
     router.use("/order-delivery-status", returnDeliveryStatusFunction);
     //Protect these endpoints. 
     router.use("/update-order-delivery-status", updateDeliveryStatusFunction);
-    router.use("create-new-order", createNewOrderFunction);
-    router.use("redirect-url", redirectURL);
+    router.use("/create-new-order", createNewOrderFunction);
+    router.use("/redirect-url", redirectURL);
     return router;
 }
 
@@ -17,8 +17,7 @@ function rootFunction(req: express.Request, res: express.Response) {
 }
 
 function redirectURL(req: express.Request, res: express.Response) {
-    console.log(JSON.stringify(req));
-    res.status(200).send("thanks!");
+    res.status(200).send(JSON.stringify(req));
 }
 
 function returnDeliveryStatusFunction(req: express.Request, res: express.Response) {
