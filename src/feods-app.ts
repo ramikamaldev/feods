@@ -33,7 +33,7 @@ class FeodsApp {
     public async instantiateMiddleware()  {
         let promiseFunction = function(resolve, reject) {
             //this.server.use(helmet());
-            this.server.use(bodyParser.json({ type: "application/*+json" }));
+            this.server.use(bodyParser.json());
             let feodsRouter = createAndReturnFeodsRouter();
             this.server.use("/", feodsRouter);
             this.server.get("/testServerRoutes", function(req, res) {

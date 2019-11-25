@@ -1,5 +1,6 @@
 import express from "express";
 import { createConsignmentOrder, retrieveCurrentConsignmentStatus, updateConsignmentStatus } from "../dao/dao-models/mongo-dao/dao-consignment-coll"
+import {parse,stringify} from "flatted/cjs"
 
 export function createAndReturnFeodsRouter() {
     let router = express.Router();
@@ -17,7 +18,7 @@ function rootFunction(req: express.Request, res: express.Response) {
 }
 
 function redirectURL(req: express.Request, res: express.Response) {
-    res.status(200).send(req);
+    res.status(200).send(req.body);
 }
 
 function returnDeliveryStatusFunction(req: express.Request, res: express.Response) {
