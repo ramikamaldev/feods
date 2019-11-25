@@ -5,14 +5,17 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/feods-app.js"
+    "start": "node ./bin/feods-app.js",
+    "watch": "nodemon ./bin/feods-app.js"
   },
   "dependencies": {
     "ajv": "^6.10.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "flatted": "^2.0.1",
     "helmet": "^3.21.2",
     "mongoose": "^5.7.11",
+    "npm": "^5.10.0",
     "paypal-rest-sdk": "^1.8.1"
   },
   "devDependencies": {
