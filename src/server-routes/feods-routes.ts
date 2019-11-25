@@ -17,7 +17,7 @@ function rootFunction(req: express.Request, res: express.Response) {
 }
 
 function redirectURL(req: express.Request, res: express.Response) {
-    res.status(200).send(JSON.stringify(req));
+    res.status(200).send(req);
 }
 
 function returnDeliveryStatusFunction(req: express.Request, res: express.Response) {
