@@ -29,7 +29,7 @@ grunt.initConfig({
       esModuleInterop: true
     },
     azure: {
-      src: ["./src/**/*.ts"],
+      src: ["./src/**/*.ts",["./src/views"]],
       outDir: "bin",
       options: {
         esModuleInterop: true
@@ -37,7 +37,7 @@ grunt.initConfig({
     },
     dev:
     {
-      src: ["./src/**/*.ts"],
+      src: ["./src/**/*.ts",["./src/views"]],
       outDir: "bin",
       watch: "./src",
       options: {

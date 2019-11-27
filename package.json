@@ -4,19 +4,21 @@
   "description": "Floom online delivery service - coding challenge",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/feods-app.js",
-    "watch": "nodemon ./bin/feods-app.js"
+    "test": "nodemon ./bin/feods-app.js",
+    "start": "node ./bin/feods-app.js"
   },
   "dependencies": {
     "ajv": "^6.10.2",
+    "crypto-random-string": "^3.0.1",
     "dotenv": "^8.2.0",
+    "ejs": "^3.0.1",
     "express": "^4.17.1",
     "flatted": "^2.0.1",
     "helmet": "^3.21.2",
     "mongoose": "^5.7.11",
     "npm": "^5.10.0",
-    "paypal-rest-sdk": "^1.8.1"
+    "paypal-rest-sdk": "^1.8.1",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
@@ -35,7 +37,9 @@
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-ts": "^6.0.0-beta.22",
-    "typescript": "^3.7.2"
+    "nodemon": "^2.0.1",
+    "typescript": "^3.7.2",
+    "xmlhttprequest": "^1.8.0"
   },
   "repository": {
     "type": "git",
