@@ -5,7 +5,7 @@ import { findAllProducts, searchForProductsByID } from "../dao/dao-models/mongo-
 import { } from "../dao/dao-models/mongo-dao/dao-consignment-coll"
 import { createPaypalPayment, executePaypalPayment } from "../feods-functionality/payments/paypal"
 import * as cryptoRandomString from "crypto-random-string"
-import { createProductsInColl } from "../dao/dao-models/mongo-dao/dao-products-coll"
+import { createProductsInColl, createOrUpdateSeller,createOrUpdateOrRetreieveUser } from "../dao"
 import { consignmentJSONCreation } from "../common-functions/json-creation"
 
 export function createAndReturnFeodsRouter() {
@@ -17,6 +17,7 @@ export function createAndReturnFeodsRouter() {
     router.use("/create-new-order", createOrderAndPay);
     router.use("/redirect-url", redirectURL);
     router.use(`/add-to-cart/:id`, addToCart);
+    router.use('/create-seller-coll', createOrUpdateSellerEndpoint)
 
     //Utility endpoints
     router.use("/populate-products-collection", populateProductsCollection)
@@ -40,14 +41,17 @@ function addToCart(req: express.Request, res: express.Response) {
 }
 
 async function createOrderAndPay(req: express.Request, res: express.Response) {
+    //START OF PRODUCT SEARCH
     let productIdArray = [];
+    let requestedOrderPayload: Array<any> = req.body;
+    let userEmailAddress = req.body.userEmailAddress;
     let randomString = cryptoRandomString.default({ length: 10, type: 'base64' });
-    req.body.forEach(function (element) {
+    requestedOrderPayload.forEach(function (element) {
         let productId = element.productId;
         productIdArray.push(productId);
     });
     let searchForProductsResult: string = await searchForProductsByID(productIdArray);
-    console.log(JSON.parse(searchForProductsResult))
+    console.log("SearchForProductResult: ", JSON.parse(searchForProductsResult));
     //Products that match the productID Array passed in.
     //If these products all have a quantity above 1 or above the required number: proceed
     let unavailableProducts = [];
@@ -66,37 +70,41 @@ async function createOrderAndPay(req: express.Request, res: express.Response) {
             }
         })
     })
+    //END OF PRODUCT SEARCH
+    //START OF USER RETRIEVAL
+    console.log("Awaiting user function");
+    let user = await createOrUpdateOrRetreieveUser(userEmailAddress);
+    console.log("User", user)
+    //END OF USER RETRIEVAL
+
     if (unavailableProducts.length === 0) {
-        consignmentJSONCreation(searchForProductsResult);
-        // createConsignmentOrder();
-        // let createConsignmentOrder = {
-        //     "orderId": "string req rand"
-        //     "userId": { "string req email" },
-        //     "consignmentId": "string req rand"
-        //     "deliveryLocation": [lat, long],
-        //     "senderLocation": [lat, long],
-        //     "consignmentStateUpdated": [date, date],
-        //     "consignmentEntryCreated": [date],
-        //     "state": {
-        //         type: String,
-        //         enum: ['processing_order', 'order_accepted', 'order_rejected', 'being_prepared', 'shipped', 'out_for_delivery', 'delivered', 'order_cancelled',
-        //             "en_route_to_sender", "waiting_at_sender", "en_route_to_recipient", "delivered", "unsuccesful"],
-        //         default: 'order_accepted'
-        //     }
-        // };
-        createPaypalPayment(createConsignmentOrder);
-        // initialisePaypalPayment();
-        // var request = require('request');
+        console.log("Awaiting consignmentJSONCreation")
+        let consignmentJSON = await consignmentJSONCreation(searchForProductsResult);
+        console.log("*************************************************\n", consignmentJSON);
+        let consignmentOrderCreationInDB = createConsignmentOrder(consignmentJSON);
+        console.log("Creating payPalPayment")
+        createPaypalPayment(consignmentOrderCreationInDB);
+        initialisePaypalPayment();
+        // var request = require('r eequest');
         // request('', function (error, response, body) {
-        //     console.log('error:', error); // Print the error if one occurred
+        //     console.log('error:',rror); // Print the error if one occurred
         //     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         //     console.log('body:', body); // Print the HTML for the Google homepage.
         // });
-        // //res.redirect(res.body.links)
+        // //res.redirect(res.body.links);
     }
-
-
     return res.send().status(400);
+}
+
+function createOrUpdateSellerEndpoint(req: express.Request, res: express.Response) {
+    let seller = req.body;
+    createOrUpdateSeller(req.body, function (err, result) {
+        console.log(err);
+        console.log(result);
+        res.send("Well done! You have inserted into the database.").status(200);
+    });
+
+
 }
 
 function initialisePaypalPayment() {

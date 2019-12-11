@@ -10,16 +10,16 @@ function configurePaypall() {
 }
 
 export function createPaypalPayment(consignmentOrderJSON) {
-    let create_payment_json = returnPaypalCreateJSON(consignmentOrderJSON);
-    // paypal.payment.create(create_payment_json, function (error, payment) {
-    //     if (error) {
-    //         console.log(error);
-    //     }
-    //     else {
-    //         console.log("Create Payment Response");
-    //         console.log(payment);
-    //     }
-    // });
+    let create_payment_json: any = returnPaypalCreateJSON(consignmentOrderJSON);
+    paypal.payment.create(create_payment_json, function (error, payment) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            console.log("Create Payment Response");
+            console.log(payment);
+        }
+    });
 }
 
 export function executePaypalPayment(paymentID) {

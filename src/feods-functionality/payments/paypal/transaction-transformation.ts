@@ -1,3 +1,6 @@
+import { calculateTotalCost } from "../../../common-functions/monetary-functions"
+import cryptoRandomString = require('crypto-random-string');
+
 export function returnPaypalCreateJSON(consignmentOrder) {
     let createPaymentJSON = transformConsignmentOrderToJSON(consignmentOrder);
     return createPaymentJSON;
@@ -18,22 +21,7 @@ export function returnPaypalExecuteJSON() {
 }
 
 function transformConsignmentOrderToJSON(consignmentOrder) {
-    // let createConsignmentOrder = {
-    //     "products": {"obj":"req"}
-    //     "orderId": "string req rand"
-    //     "userId": { "string req email" },
-    //     "consignmentId": "string req rand"
-    //     "deliveryLocation": [lat, long],
-    //     "senderLocation": [lat, long],
-    //     "consignmentStateUpdated": [date, date],
-    //     "consignmentEntryCreated": [date],
-    //     "state": {
-    //         type: String,
-    //         enum: ['processing_order', 'order_accepted', 'order_rejected', 'being_prepared', 'shipped', 'out_for_delivery', 'delivered', 'order_cancelled',
-    //             "en_route_to_sender", "waiting_at_sender", "en_route_to_recipient", "delivered", "unsuccesful"],
-    //         default: 'order_accepted'
-    //     }
-    // };
+    let items = createItemsListFromProducts(consignmentOrder.products)
     let createPaymentJSON = {
         "intent": "sale",
         "payer": {
@@ -41,50 +29,34 @@ function transformConsignmentOrderToJSON(consignmentOrder) {
         },
         "transactions": [{
             "amount": {
-                "total": "30.11",
-                "currency": "USD",
+                "total": calculateTotalCost(consignmentOrder.subTotal),
+                "currency": consignmentOrder.currency,
                 "details": {
-                    "subtotal": "30.00",
-                    "tax": "0.07",
-                    "shipping": "0.03",
-                    "handling_fee": "1.00",
-                    "shipping_discount": "-1.00",
-                    "insurance": "0.01"
+                    "subtotal": consignmentOrder.totalPrice,
+                    "tax": consignmentOrder.taxRate,
+                    "shipping": consignmentOrder.shipping,
+                    "handling_fee": consignmentOrder.handlingFee,
+                    "shipping_discount": consignmentOrder.shippingDiscount,
+                    "insurance": consignmentOrder.insurance
                 }
             },
-            "description": "This is the payment transaction description.",
-            "custom": "EBAY_EMS_90048630024435",
-            "invoice_number": "48787589673",
+            "description": `Feods Order - Order Number:${consignmentOrder.orderId}`,
+            "custom": `FEODS_ARR_${cryptoRandomString({ length: 10, characters: "FEODSARR12" })}`,
+            "invoice_number": cryptoRandomString({ length: 15, characters: 'FEODS12345' }),
             "payment_options": {
                 "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
             },
             "soft_descriptor": "ECHI5786786",
             "item_list": {
-                "items": [{
-                    "name": "hat",
-                    "description": "Brown color hat",
-                    "quantity": "5",
-                    "price": "3",
-                    "tax": "0.01",
-                    "sku": "1",
-                    "currency": "USD"
-                }, {
-                    "name": "handbag",
-                    "description": "Black color hand bag",
-                    "quantity": "1",
-                    "price": "15",
-                    "tax": "0.02",
-                    "sku": "product34",
-                    "currency": "USD"
-                }],
+                "items": items,
                 "shipping_address": {
-                    "recipient_name": "Hello World",
+                    "recipient_name": consignmentOrder.user.userName,
                     "line1": "4thFloor",
                     "line2": "unit#34",
                     "city": "SAn Jose",
                     "country_code": "US",
                     "postal_code": "95131",
-                    "phone": "011862212345678",
+                    "phone": consignmentOrder.user.userPhoneNumber,
                     "state": "CA"
                 }
             }
@@ -96,6 +68,10 @@ function transformConsignmentOrderToJSON(consignmentOrder) {
         }
     };
 
+
+}
+
+function createItemsListFromProducts(productList) {
 
 }
 

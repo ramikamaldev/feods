@@ -6,6 +6,7 @@ const productsSchema: Schema = new Schema(
         "sellersAddress": { type: String, required: true },
         "sellerCoordinates": { type: [Number], required: true },
         "sellerPhoneNumber": { type: Number, required: true },
+        "sellerId": { type: String, required: true }
     });
 
 export const sellersModel = model('feods-sellers', productsSchema, "feods-sellers");

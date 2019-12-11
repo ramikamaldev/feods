@@ -3,7 +3,6 @@ import { productsJSON } from "../../../common-functions/coll-population/products
 
 
 export function searchForProductsByID(productIds): Promise<string> {
-    //console.log("productIds: ", productIds)
     return new Promise(async function (resolve, reject) {
         try {
             let stream = await productsModel.collection.find({ "productId": { "$in": productIds } }).stream();
@@ -12,14 +11,12 @@ export function searchForProductsByID(productIds): Promise<string> {
                 docArray.push(doc)
             });
             stream.on('close', function () {
-                console.log("Array: ", docArray)
                 resolve(JSON.stringify(docArray));
                 return;
             })
         }
         catch (err) {
             reject(err);
-            console.log("rejected");
             return;
         }
     })

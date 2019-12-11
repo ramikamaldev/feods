@@ -24,7 +24,7 @@ grunt.initConfig({
       strictNullChecks: false,
       strictPropertyInitilization: false,
       verbose: true,
-      sourceMap: false,
+      sourceMap: true,
       declaration: false,
       esModuleInterop: true
     },
