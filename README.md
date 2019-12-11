@@ -1,3 +1,3 @@
 # Feods
 
-Order, delivery system.
+Florist e-commerce order delivery system.
