@@ -19,24 +19,27 @@ class FeodsApp {
 
     public async instantiateApplicationInfrastructure() {
         let result = connectToFeodsMongodb()
-            .then(async function(result) {
+            .then(async function (result) {
                 await feodsApp.instantiateMiddleware();
                 feodsApp.startExpress();
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 //TODO: If the promise was rejected, throw the error and terminate.
                 console.log(error);
             });
         return;
     }
 
-    public async instantiateMiddleware()  {
-        let promiseFunction = function(resolve, reject) {
-            //this.server.use(helmet());
+    public async instantiateMiddleware() {
+        let promiseFunction = function (resolve, reject) {
+            this.server.use(helmet());
             this.server.use(bodyParser.json());
+            this.server.set('views', __dirname + '/views');
+            this.server.engine('html', require('ejs').renderFile);
+            this.server.set('view engine', 'ejs');
             let feodsRouter = createAndReturnFeodsRouter();
-            this.server.use("/", feodsRouter);
-            this.server.get("/testServerRoutes", function(req, res) {
+            this.server.use(feodsRouter);
+            this.server.get("/testServerRoutes", function (req, res) {
                 res.send("Server is running correctly.");
             });
             return resolve(0);
@@ -45,7 +48,6 @@ class FeodsApp {
     }
 
     public async startExpress() {
-        //TODO: set port in dotenv.
         this.server.listen(process.env.PORT);
         console.log(
             `Feods Server Started! Listening on port: ${process.env.PORT}`

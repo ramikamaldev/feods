@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Feods Homepage</title>
+
+  <script> 
+  function addItemToLocalStorage(itemJSON) {
+
+      let orderAppendObj = {
+        "productId":
+          itemJSON["productId"], "quantity": itemJSON.quantity
+      };
+      console.log(orderAppendObj)
+      if (localStorage.getItem("cart") === null) {
+        localStorage.setItem("cart", JSON.stringify([orderAppendObj]));
+      }
+      else {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        console.log(cart);
+        console.log(typeof cart)
+        cart.push(orderAppendObj)
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+      console.log(JSON.parse(localStorage.getItem("cart")))
+    };
+    
+  </script>
+  <script>
+      function sendData(data) {
+      console.log("CALLING XMLHTTPREQUEST")
+      var XHR = new XMLHttpRequest(); XHR.addEventListener('load',
+        function (event) { console.log('Yeah! Data sent and response loaded.'); }); XHR.addEventListener('error', function
+          (event) { console.log('Oops! Something goes wrong.'); }); XHR.open('POST', 'http://localhost:5050/create-new-order');
+      XHR.setRequestHeader("Content-Type", "application/json"); 
+      console.log(typeof data)
+      console.log(JSON.stringify(data))
+      XHR.send(JSON.stringify(data));
+    }
+  </script>
+</head>
+
+<body>
+  <h2>Feods Product Table</h2>
+  <p>Please select the products you would like to purchase</p>
+
+  <table>
+    <tr>
+      <td id="productCell">
+        <img border=0 alt="W3Schools" src="https://cdn.pixabay.com/photo/2016/03/02/10/39/tulip-1232068_1280.jpg"
+          width="100" height="100">
+        <br>
+        <form onsubmit="addItemToLocalStorage({productId:1, quantity:this.Quantity.value})">
+          Quantity: <input type="number" name="Quantity" value=1><br>
+          <input type="submit" value="Add to Cart!">
+        </form>
+      </td>
+      <td>
+        <img border=0 alt="W3Schools" src="https://cdn.pixabay.com/photo/2015/07/02/10/44/roses-828945_1280.jpg"
+          width="100" height="100">
+        <br>
+        <form onsubmit="addItemToLocalStorage({productId:2, quantity:this.Quantity.value})">
+          Quantity: <input type="number" name="Quantity" value=1><br>
+          <input type="submit" value="Add to Cart!">
+        </form>
+      </td>
+      <td>
+        <img border=0 alt="W3Schools" src="https://cdn.pixabay.com/photo/2018/09/19/18/36/emotions-3689248_1280.jpg"
+          width="100" height="100">
+        <br>
+        <form onsubmit="addItemToLocalStorage({productId:3, quantity:this.Quantity.value})">
+          Quantity: <input type="number" name="Quantity" value=1><br>
+          <input type="submit" value="Add to Cart!">
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <!--  <form action="http://localhost:5050/happy" method="post">
+            <input type="submit" value="Checkout!">
+          </form> -->
+        <button onclick="sendData(JSON.parse(localStorage.getItem('cart')))">Checkout!</button>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
