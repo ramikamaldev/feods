@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import * as path from "path";
 
 import { connectToFeodsMongodb } from "./common-functions/mongo-connect";
-import { createAndReturnFeodsRouter } from "./server-routes/feods-routes";
+import { createAndReturnFeodsRouter } from "./routes/feods-routes";
 
 class FeodsApp {
     public server: express.Application;
